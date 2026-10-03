@@ -1,15 +1,18 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { ThemeProvider, CssBaseline } from "@mui/material";
 import "./globals.css";
+import localFont from "next/font/local";
+import theme from "./theme";
+import RtlProvider from "./RtlProvider";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const myFont = localFont({
+  src: [
+    { path: "./fonts/AbarHighFaNum-Regular.ttf", weight: "400" },
+    { path: "./fonts/AbarHighFaNum-SemiBold.ttf", weight: "600" },
+    { path: "./fonts/AbarHighFaNum-Bold.ttf", weight: "700" },
+    { path: "./fonts/AbarHighFaNum-ExtraBold.ttf", weight: "800" },
+  ],
+  variable: "--font-custom",
 });
 
 export const metadata: Metadata = {
@@ -19,8 +22,15 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body>{children}</body>
+    <html lang="fa" dir="rtl" className={`${myFont.variable}`}>
+      <body>
+        <RtlProvider>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            {children}
+          </ThemeProvider>
+        </RtlProvider>
+      </body>
     </html>
   );
 }
